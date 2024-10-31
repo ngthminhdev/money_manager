@@ -67,11 +67,11 @@ class _HomePageState
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 200),
                 left: read.selectedTab == HomeConstant.LIST_TAB_INDEX
-                  ? deviceInfo.width * 0.1
-                  : deviceInfo.width * 0.5,
+                    ? deviceInfo.width * 0.1
+                    : deviceInfo.width * 0.5,
                 right: read.selectedTab == HomeConstant.LIST_TAB_INDEX
-                  ? deviceInfo.width * 0.5
-                  : deviceInfo.width * 0.1,
+                    ? deviceInfo.width * 0.5
+                    : deviceInfo.width * 0.1,
                 child: Container(
                   width: deviceInfo.width * 0.4,
                   height: 30,
@@ -168,7 +168,7 @@ class _HomePageState
                 ],
               ),
               Text(
-                'INCOME',
+                'THU',
                 style: TextStyle(
                   fontSize: 15,
                   color: appColors.white,
@@ -206,7 +206,7 @@ class _HomePageState
                 ],
               ),
               Text(
-                'EXPENSES',
+                'CHI',
                 style: TextStyle(
                   fontSize: 15,
                   color: appColors.white,
@@ -244,7 +244,7 @@ class _HomePageState
                 ],
               ),
               Text(
-                'BALANCE',
+                'CÒN LẠI',
                 style: TextStyle(
                   fontSize: 15,
                   color: appColors.white,
