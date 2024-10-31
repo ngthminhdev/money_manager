@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_manager/constants/app_color.dart';
+import 'package:money_manager/helpers/device_helper.dart';
 import 'package:money_manager/modules/main/main_page.dart';
 import 'routes/router.dart' as route;
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    deviceInfo.init(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Money Manager',

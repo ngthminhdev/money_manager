@@ -3,20 +3,23 @@ import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:money_manager/base/base_page.dart';
 import 'package:money_manager/constants/app_color.dart';
+import 'package:money_manager/helpers/device_helper.dart';
 import 'package:money_manager/helpers/number_helper.dart';
+import 'package:money_manager/modules/home/constants/home_constant.dart';
 import 'package:money_manager/modules/home/home_page_model.dart';
 import 'package:money_manager/widgets/loading/loading_widget.dart';
 import 'package:remixicon/remixicon.dart';
 
 class HomePage extends BasePage<HomePageModel, HomePageState> {
   HomePage({super.key}) : super(provider: homePageProvider);
-  
+
   @override
-  ConsumerState<BasePage<HomePageModel, HomePageState>> createState() => _HomePageState();
+  ConsumerState<BasePage<HomePageModel, HomePageState>> createState() =>
+      _HomePageState();
 }
 
-class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState> {
-
+class _HomePageState
+    extends BasePageConsumerState<HomePageModel, HomePageState> {
   @override
   Widget renderPage(BuildContext context) {
     return ModalProgressHUD(
@@ -24,25 +27,25 @@ class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState>
         progressIndicator: const LoadingWidget(),
         child: buildBody(context));
   }
-  
-  Widget buildBody(BuildContext context,) {
+
+  Widget buildBody(BuildContext context) {
     return SafeArea(
       top: true,
       child: Scaffold(
-        backgroundColor: appColors.black,
+          backgroundColor: appColors.black,
           body: Container(
-        child: Column(
-          children: [
-            buildTopSection(context),
-          ],
-        ),
-      )),
+            child: Column(
+              children: [
+                buildTopSection(context),
+              ],
+            ),
+          )),
     );
   }
 
   Container buildTopSection(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: deviceInfo.height * 0.3,
       decoration: BoxDecoration(
           gradient: LinearGradient(
         colors: [appColors.gradientGreen, appColors.gradientBlue],
@@ -59,47 +62,78 @@ class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState>
           const SizedBox(
             height: 30,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Stack(
             children: [
-              GestureDetector(
-                onTap: () {
-                  print('list tab');
-                },
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 200),
+                left: read.selectedTab == HomeConstant.LIST_TAB_INDEX
+                  ? deviceInfo.width * 0.1
+                  : deviceInfo.width * 0.5,
+                right: read.selectedTab == HomeConstant.LIST_TAB_INDEX
+                  ? deviceInfo.width * 0.5
+                  : deviceInfo.width * 0.1,
                 child: Container(
-                alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.white24,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          bottomLeft: Radius.circular(20))),
-                  child: Text(
-                    'LIST',
-                    style: TextStyle(color: appColors.white, fontWeight: FontWeight.bold),
-                    ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  print('categories tab');
-                },
-                child: Container(
-                alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width * 0.4,
+                  width: deviceInfo.width * 0.4,
                   height: 30,
                   decoration: BoxDecoration(
                     color: appColors.lime,
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20))),
-                  child: Text(
-                    'CATEGORIES',
-                    style: TextStyle(color: appColors.white, fontWeight: FontWeight.bold),
-                    ),
+                    borderRadius: read.selectedTab == 0
+                        ? const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            bottomLeft: Radius.circular(20))
+                        : const BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            bottomRight: Radius.circular(20)),
+                  ),
                 ),
-              )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      pageModel.selectTab(HomeConstant.LIST_TAB_INDEX);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: deviceInfo.width * 0.4,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: appColors.white.withAlpha(32),
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              bottomLeft: Radius.circular(20))),
+                      child: Text(
+                        'DANH SÁCH',
+                        style: TextStyle(
+                            color: appColors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      pageModel.selectTab(HomeConstant.CATEGORIES_TAB_INDEX);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: deviceInfo.width * 0.4,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: appColors.white.withAlpha(32),
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(20),
+                              bottomRight: Radius.circular(20))),
+                      child: Text(
+                        'DANH MỤC',
+                        style: TextStyle(
+                            color: appColors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ],
           )
         ],
@@ -118,11 +152,15 @@ class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState>
             children: [
               Row(
                 children: [
-                  Icon(Icons.attach_money_outlined, color: appColors.green, size: 16,),
+                  Icon(
+                    Icons.attach_money_outlined,
+                    color: appColors.green,
+                    size: 16,
+                  ),
                   Text(
                     NumberHelper.formatNumber(read.income),
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: appColors.green,
                     ),
@@ -132,8 +170,7 @@ class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState>
               Text(
                 'INCOME',
                 style: TextStyle(
-                  fontSize: 14,
-                  // fontWeight: FontWeight.bold,
+                  fontSize: 15,
                   color: appColors.white,
                 ),
               ),
@@ -153,11 +190,15 @@ class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState>
             children: [
               Row(
                 children: [
-                  Icon(Icons.attach_money_outlined, color: appColors.orange, size: 16,),
+                  Icon(
+                    Icons.attach_money_outlined,
+                    color: appColors.orange,
+                    size: 16,
+                  ),
                   Text(
                     NumberHelper.formatNumber(read.expenses),
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: appColors.orange,
                     ),
@@ -167,8 +208,7 @@ class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState>
               Text(
                 'EXPENSES',
                 style: TextStyle(
-                  fontSize: 14,
-                  // fontWeight: FontWeight.bold,
+                  fontSize: 15,
                   color: appColors.white,
                 ),
               ),
@@ -188,11 +228,15 @@ class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState>
             children: [
               Row(
                 children: [
-                  Icon(Icons.attach_money_outlined, color: appColors.yellow, size: 16,),
+                  Icon(
+                    Icons.attach_money_outlined,
+                    color: appColors.yellow,
+                    size: 16,
+                  ),
                   Text(
                     NumberHelper.formatNumber(read.balance),
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: appColors.yellow,
                     ),
@@ -202,8 +246,7 @@ class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState>
               Text(
                 'BALANCE',
                 style: TextStyle(
-                  fontSize: 14,
-                  // fontWeight: FontWeight.bold,
+                  fontSize: 15,
                   color: appColors.white,
                 ),
               ),

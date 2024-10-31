@@ -45,7 +45,6 @@ class MainPageModel extends BasePageModel<MainPageState> {
   }
 
   void onNavbarChange(int index) {
-    lock(true);
     updatePageState(() {
       state.selectedIndex = index;
     });
