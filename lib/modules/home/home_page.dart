@@ -261,7 +261,7 @@ class _HomePageState
     return Row(
       children: [
         Expanded(
-            flex: 2,
+            flex: 1,
             child: Container(
               child: IconButton(
                   onPressed: () {},

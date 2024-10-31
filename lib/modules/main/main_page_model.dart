@@ -33,11 +33,11 @@ class MainPageModel extends BasePageModel<MainPageState> {
     HomePage(),
     HomePage(),
     HomePage(),
-  ], selectedIndex: 1));
+  ], selectedIndex: 0));
   late PageController pageController;
   
   void initPage() {
-    pageController = PageController(initialPage: 1);
+    pageController = PageController(initialPage: 0);
   }
   
   void disposePage() {
@@ -49,7 +49,7 @@ class MainPageModel extends BasePageModel<MainPageState> {
       state.selectedIndex = index;
     });
     pageController.animateToPage(state.selectedIndex,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
+        duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 }
 
