@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_manager/base/base_page_model.dart';
-import 'package:money_manager/base/base_state.dart';
+import 'package:money_manager/base/base_page_state.dart';
 
 class HomePageState extends BasePageState {
   double income;

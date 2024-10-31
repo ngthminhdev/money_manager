@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:money_manager/base/base_page_model.dart';
-import 'package:money_manager/base/base_state.dart';
+import 'package:money_manager/base/base_page_state.dart';
 import 'package:money_manager/modules/home/home_page.dart';
 
 class MainPageState extends BasePageState {
@@ -45,7 +45,10 @@ class MainPageModel extends BasePageModel<MainPageState> {
   }
 
   void onNavbarChange(int index) {
-    state = state.updateState(selectedIndex: index);
+    lock(true);
+    updatePageState(() {
+      state.selectedIndex = index;
+    });
     pageController.animateToPage(state.selectedIndex,
         duration: const Duration(milliseconds: 400), curve: Curves.easeInOut);
   }

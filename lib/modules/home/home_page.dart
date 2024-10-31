@@ -18,14 +18,14 @@ class HomePage extends BasePage<HomePageModel, HomePageState> {
 class _HomePageState extends BasePageConsumerState<HomePageModel, HomePageState> {
 
   @override
-  Widget renderPage(BuildContext context, HomePageState pageState) {
+  Widget renderPage(BuildContext context) {
     return ModalProgressHUD(
         inAsyncCall: read.isLockedPage,
         progressIndicator: const LoadingWidget(),
-        child: buildBody(context, pageState));
+        child: buildBody(context));
   }
   
-  Widget buildBody(BuildContext context, HomePageState pageState) {
+  Widget buildBody(BuildContext context,) {
     return SafeArea(
       top: true,
       child: Scaffold(

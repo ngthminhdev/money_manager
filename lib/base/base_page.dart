@@ -11,11 +11,11 @@ abstract class BasePageConsumerState<T extends StateNotifier<S>, S> extends Cons
   S get read => ref.read(widget.provider);
   void listen(void Function(S? previous, S next) listener) => ref.listen(widget.provider, listener);
 
-  Widget renderPage(BuildContext context, S pageState);
+  Widget renderPage(BuildContext context);
 
   @override
   Widget build(BuildContext context) {
-    final pageState = ref.watch(widget.provider);
-    return renderPage(context, pageState);
+    ref.watch(widget.provider);
+    return renderPage(context);
   }
 }

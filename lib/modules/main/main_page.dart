@@ -18,9 +18,9 @@ class MainPage extends BasePage<MainPageModel, MainPageState> {
 
 class _MainPageState extends BasePageConsumerState<MainPageModel, MainPageState> {
   @override
-  Widget renderPage(BuildContext context, MainPageState pageState) {
+  Widget renderPage(BuildContext context) {
     return ModalProgressHUD(
-        inAsyncCall: pageState.isLockedPage,
+        inAsyncCall: read.isLockedPage,
         progressIndicator: const LoadingWidget(),
         child: buildBody(context));
   }
