@@ -24,12 +24,10 @@ class AppColor {
   Color dark = HexColor.fromHex("#101010");
   Color gray = HexColor.fromHex("#282828");
   Color white = HexColor.fromHex("#FFFFFF");
-
-  // final yellow = HexColor.fromHex('#FFE9B1');
-
-  final orange = HexColor.fromHex('#fa7248');
-  final green = HexColor.fromHex("#3fd6b1");
-  final yellow = HexColor.fromHex('#f9da89');
+  Color orange = HexColor.fromHex('#fa7248');
+  Color green = HexColor.fromHex("#3fd6b1");
+  Color yellow = HexColor.fromHex('#f9da89');
+  Color red = HexColor.fromHex("#CF2F2F");
 
   Color gradientGreen = HexColor.fromHex("#069b88");
   Color gradientBlue = HexColor.fromHex("#083fb4");
@@ -40,7 +38,7 @@ class AppColor {
 
   static Color randomColor() {
     final String hex = RandomColor.getColor(
-        Options(format: Format.hex, luminosity: Luminosity.bright));
+        Options(format: Format.hex, luminosity: Luminosity.dark));
     final Color randomColor = HexColor.fromHex(hex);
     return randomColor;
   }

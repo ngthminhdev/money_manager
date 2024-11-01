@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/src/consumer.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:money_manager/base/base_page.dart';
@@ -10,13 +9,14 @@ import 'package:money_manager/widgets/nav_bar/nav_bar.dart';
 import 'package:remixicon/remixicon.dart';
 
 class MainPage extends BasePage<MainPageModel, MainPageState> {
-  MainPage({super.key}): super(provider: mainPageProvider);
+  MainPage({super.key}) : super(provider: mainPageProvider);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MainPageState(); 
+  ConsumerState<ConsumerStatefulWidget> createState() => _MainPageState();
 }
 
-class _MainPageState extends BasePageConsumerState<MainPageModel, MainPageState> {
+class _MainPageState
+    extends BasePageConsumerState<MainPageModel, MainPageState> {
   @override
   Widget renderPage(BuildContext context) {
     return ModalProgressHUD(
@@ -24,13 +24,13 @@ class _MainPageState extends BasePageConsumerState<MainPageModel, MainPageState>
         progressIndicator: const LoadingWidget(),
         child: buildBody(context));
   }
-  
+
   @override
   void initState() {
     pageModel.initPage();
     super.initState();
   }
-  
+
   @override
   void dispose() {
     pageModel.disposePage();
@@ -38,20 +38,60 @@ class _MainPageState extends BasePageConsumerState<MainPageModel, MainPageState>
   }
 
   Widget buildBody(BuildContext context) {
-    return Scaffold(
-      backgroundColor: appColors.black,
-      body: PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: pageModel.pageController,
-        children: read.listOfPages,
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: appColors.black,
+        body: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [appColors.gradientGreen, appColors.gradientBlue],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
+              ),
+              alignment: Alignment.center,
+              height: 50,
+              child: Row(
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Remix.menu_fill,
+                        color: appColors.white,
+                      )),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Nguyễn Thanh Minh",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: appColors.white,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: pageModel.pageController,
+                children: read.listOfPages,
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: _buildNavbar(),
       ),
-      bottomNavigationBar: _buildNavbar(),
     );
   }
 
   NavBar _buildNavbar() {
     return NavBar(
-      backgroundColor: appColors.dark,
+      backgroundColor: appColors.gray,
       onButtonPressed: pageModel.onNavbarChange,
       iconSize: 30,
       fontSize: 14,
@@ -74,5 +114,4 @@ class _MainPageState extends BasePageConsumerState<MainPageModel, MainPageState>
       ],
     );
   }
-
 }

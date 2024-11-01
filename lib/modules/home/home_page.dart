@@ -8,6 +8,7 @@ import 'package:money_manager/helpers/number_helper.dart';
 import 'package:money_manager/modules/home/constants/home_constant.dart';
 import 'package:money_manager/modules/home/home_page_model.dart';
 import 'package:money_manager/widgets/loading/loading_widget.dart';
+import 'package:money_manager/widgets/transaction_line/transaction_line.dart';
 import 'package:remixicon/remixicon.dart';
 
 class HomePage extends BasePage<HomePageModel, HomePageState> {
@@ -33,19 +34,69 @@ class _HomePageState
       top: true,
       child: Scaffold(
           backgroundColor: appColors.black,
-          body: Container(
-            child: Column(
-              children: [
-                buildTopSection(context),
-              ],
-            ),
+          body: Column(
+            children: [
+              buildTopSection(context),
+              SizedBox(
+                height: pageModel.getBodyHeight(),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      buildTransactionsSection(),
+                      buildTransactionsSection()
+                    ],
+                  ),
+                ),
+              ),
+            ],
           )),
+    );
+  }
+
+  Column buildTransactionsSection() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'HÔM NAY',
+            style: TextStyle(fontSize: 16, color: appColors.white),
+          ),
+        ),
+        Container(
+          color: appColors.dark,
+          child: Column(
+            children: [
+              TransactionLine(amount: 500000, icon: Remix.exchange_dollar_fill),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Divider(
+                  color: appColors.gray,
+                  thickness: 1,
+                ),
+              ),
+              TransactionLine(
+                  amount: -119000, icon: Remix.exchange_dollar_fill),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Divider(
+                  color: appColors.gray,
+                  thickness: 1,
+                ),
+              ),
+              TransactionLine(amount: 250000, icon: Remix.exchange_dollar_fill),
+            ],
+          ),
+        )
+      ],
     );
   }
 
   Container buildTopSection(BuildContext context) {
     return Container(
-      height: deviceInfo.height * 0.3,
+      height: deviceInfo.height * 0.25,
+      padding: const EdgeInsets.only(top: 24),
       decoration: BoxDecoration(
           gradient: LinearGradient(
         colors: [appColors.gradientGreen, appColors.gradientBlue],
@@ -53,14 +104,134 @@ class _HomePageState
         end: Alignment.bottomRight,
       )),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          buildHeader(),
-          const SizedBox(
-            height: 20,
+          /**
+           * TAB SELECT SECTION
+           */
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.attach_money_outlined,
+                          color: appColors.green,
+                          size: 16,
+                        ),
+                        Text(
+                          NumberHelper.formatNumber(read.income),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: appColors.green,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'THU',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: appColors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 35,
+                decoration: BoxDecoration(
+                  border: Border(
+                      left: BorderSide(width: 1, color: appColors.white)),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.attach_money_outlined,
+                          color: appColors.orange,
+                          size: 16,
+                        ),
+                        Text(
+                          NumberHelper.formatNumber(read.expenses),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: appColors.orange,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'CHI',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: appColors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 35,
+                decoration: BoxDecoration(
+                  border: Border(
+                      left: BorderSide(width: 1, color: appColors.white)),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.attach_money_outlined,
+                          color: appColors.yellow,
+                          size: 16,
+                        ),
+                        Text(
+                          NumberHelper.formatNumber(read.balance),
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: appColors.yellow,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      'CÒN LẠI',
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: appColors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          buildMoneySection(),
+
+          /**
+           * DATE SELECT SECTION
+           */
+
           const SizedBox(
-            height: 30,
+            height: 24,
           ),
           Stack(
             children: [
@@ -135,155 +306,98 @@ class _HomePageState
                 ],
               ),
             ],
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          Container(
+            width: deviceInfo.width,
+            color: appColors.white.withOpacity(0.2),
+            child: Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: deviceInfo.width * 0.1,
+                        child: Center(
+                          child: Icon(
+                            Remix.arrow_left_s_line,
+                            color: appColors.white,
+                          ),
+                        ),
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            read.currentMonthYear,
+                            style: TextStyle(
+                              color: appColors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            '3 giao dịch',
+                            style: TextStyle(
+                              color: appColors.white,
+                              fontSize: 15,
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: deviceInfo.width * 0.1,
+                        child: Center(
+                          child: Icon(
+                            Remix.arrow_right_s_line,
+                            color: appColors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned.fill(
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: deviceInfo.width * 0.5,
+                        child: Material(
+                          elevation: 1,
+                          color: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          child: InkWell(
+                            hoverColor: appColors.lime,
+                            onTap: () {
+                              pageModel.selectMonth(MonthSelect.previous);
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: deviceInfo.width * 0.5,
+                        child: Material(
+                          elevation: 1,
+                          color: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              pageModel.selectMonth(MonthSelect.next);
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           )
         ],
       ),
-    );
-  }
-
-  Row buildMoneySection() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.attach_money_outlined,
-                    color: appColors.green,
-                    size: 16,
-                  ),
-                  Text(
-                    NumberHelper.formatNumber(read.income),
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: appColors.green,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                'THU',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: appColors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          height: 35,
-          decoration: BoxDecoration(
-            border: Border(left: BorderSide(width: 1, color: appColors.white)),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.attach_money_outlined,
-                    color: appColors.orange,
-                    size: 16,
-                  ),
-                  Text(
-                    NumberHelper.formatNumber(read.expenses),
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: appColors.orange,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                'CHI',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: appColors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          height: 35,
-          decoration: BoxDecoration(
-            border: Border(left: BorderSide(width: 1, color: appColors.white)),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.attach_money_outlined,
-                    color: appColors.yellow,
-                    size: 16,
-                  ),
-                  Text(
-                    NumberHelper.formatNumber(read.balance),
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: appColors.yellow,
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                'CÒN LẠI',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: appColors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row buildHeader() {
-    return Row(
-      children: [
-        Expanded(
-            flex: 1,
-            child: Container(
-              child: IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Remix.menu_fill,
-                    color: appColors.white,
-                  )),
-            )),
-        Expanded(
-            flex: 8,
-            child: Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Thanh Minh",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: appColors.white,
-                ),
-              ),
-            ))
-      ],
     );
   }
 }

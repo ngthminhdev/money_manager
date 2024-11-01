@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_manager/constants/app_constant.dart';
 import 'widget/nav_bar_button.dart';
 import 'model/menu_item.dart';
 
@@ -35,7 +36,7 @@ class NavBarBody extends StatelessWidget {
     final double bottomPadding = MediaQuery.of(context).padding.bottom;
     return Container(
       clipBehavior: Clip.hardEdge,
-      height: 80 + bottomPadding,
+      height: appConstant.NAVBAR_HEIGHT + bottomPadding,
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       decoration: const BoxDecoration(),
       alignment: Alignment.center,

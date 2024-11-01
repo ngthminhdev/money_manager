@@ -21,25 +21,26 @@ class MainPageState extends BasePageState {
     bool? isLockedPage,
   }) {
     return MainPageState(
-        listOfPages: listOfPages ?? this.listOfPages,
-        selectedIndex: selectedIndex ?? this.selectedIndex,
-        isLockedPage: isLockedPage ?? this.isLockedPage,
-  );
+      listOfPages: listOfPages ?? this.listOfPages,
+      selectedIndex: selectedIndex ?? this.selectedIndex,
+      isLockedPage: isLockedPage ?? this.isLockedPage,
+    );
   }
 }
 
 class MainPageModel extends BasePageModel<MainPageState> {
-  MainPageModel() : super(MainPageState(listOfPages: [
-    HomePage(),
-    HomePage(),
-    HomePage(),
-  ], selectedIndex: 0));
+  MainPageModel()
+      : super(MainPageState(listOfPages: [
+          HomePage(),
+          HomePage(),
+          HomePage(),
+        ], selectedIndex: 0));
   late PageController pageController;
-  
+
   void initPage() {
     pageController = PageController(initialPage: 0);
   }
-  
+
   void disposePage() {
     pageController.dispose();
   }
